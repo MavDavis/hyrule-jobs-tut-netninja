@@ -1,11 +1,10 @@
 <template>
     <div class="joblist">
-        <button @click="OrderJobs()">Order by location</button>
-        <button @click="OrderJobs()">Order by Salary</button>
-        <button @click="OrderJobs()">Order by Title</button>
-        <transition-group name="move" tag="ul">
+   
+        <h1>Odered by {{ order }}</h1>
+        <transition-group name="list" tag="ul">
             <li v-for="job in jobs" :key="job.id" class="job-card">
-          <h2> {{ job.title }} in {{ job.location }} </h2>
+          <h4> {{ job.title }} in {{ job.location }} </h4>
           <div class="salary">
             <p>$ {{ job.salary }}</p>
           </div>
@@ -25,17 +24,19 @@
   <script setup lang="ts">
   import Job from '@/types/Jobs';
   import { defineProps, PropType } from 'vue';
+
+  type OrderTerm = 'location' | "salary" | "title"
   
   const props = defineProps({
     jobs: {
       type: Array as PropType<Job[]>,
       required: true,
     },
+    order:{
+        type:String as PropType<OrderTerm>
+    }
   });
-  type OrderTerm = 'location' | "salary" | "title"
-  const OrderJobs = (term : OrderTerm)=>{
-    return term
-  }
+
   </script>
   
   <style scoped>
@@ -74,17 +75,9 @@
     line-height: 1.5;
     color: #333;
   }
-.move-enter-active, .move-leave-active {
-  transition: all 0.5s ease; 
-}
-.move-enter, .move-leave-to  {
-  position: absolute; 
-  opacity: 0; 
-}
-  @media (max-width: 768px) {
-    .job-card {
-      padding: 15px;
-    }
+  .list-move{
+    transition: all 0.5s ease;
   }
+ 
   </style>
   
